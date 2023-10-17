@@ -2,10 +2,18 @@
   "name": "bun-learning-project",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "start": "bun run web-server.ts",
+    "serve": "bun --watch web-server.ts"
+  },
   "devDependencies": {
     "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/figlet": "^1.5.6",
+    "figlet": "^1.6.0"
   }
 }

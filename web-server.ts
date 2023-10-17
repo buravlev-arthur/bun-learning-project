@@ -22,6 +22,12 @@ const server = Bun.serve({
             throw new Error('Message of an error')
         }
 
+        if (url.pathname === '/file') {
+            const fileName = `${import.meta.dir}/assets/file.txt`;
+            const fileContent = Bun.file(fileName);
+            return new Response(fileContent);
+        }
+
         return new Response('404 - Page not found', { status: 404 });
     },
 

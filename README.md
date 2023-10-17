@@ -102,3 +102,13 @@ Bun.server({
 })
 ```
 
+Обработка файла:
+
+```javascript
+// обработчик маршрута в fetch()
+if (url.pathname === '/file') {
+    const fileName = `${import.meta.dir}/assets/file.txt`;
+    const fileContent = Bun.file(fileName);
+    return new Response(fileContent);
+}
+```

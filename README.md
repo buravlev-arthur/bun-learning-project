@@ -181,3 +181,27 @@ new Elysia()
     date: getDate(),
   }))
 ```
+
+Создание и использование плагина:
+
+```typescript
+// создаём плагин в отдельном модуле: plugins/plugin.ts
+import Elysia from 'elysia';
+
+export default new Elysia()
+  .state('plugin-version', 1)
+  .get('/version', ({ store }) => ({ pluginVersion: store['plugin-version']}))
+  .get('/greet', () => 'Hi! I am plugin');
+```
+
+```typescript
+// подключаем и используем плагин в приложении (index.ts)
+import Elysia from 'elysia';
+import plugin from './plugins/plugin.ts';
+
+const app = new Elysia()
+    .use(plugin)
+    .get('/', ({ store }) => `Версия подключенного плагина: ${store['plugin-version']}`)
+    .listen(3000);
+```
+

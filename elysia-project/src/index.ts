@@ -1,6 +1,8 @@
 import { Elysia } from "elysia";
+import plugin from "./plugins/plugin";
 
 let postIds = 0;
+
 
 const app = new Elysia()
   .get("/", () => "Hello Elysia")
@@ -36,6 +38,10 @@ const app = new Elysia()
     version,
     date: getDate(),
   }))
+
+  // Подключение плагина
+  .use(plugin)
+  .get('/use-plugin', ({ store }) => `Версия подключенного плагина: ${store['plugin-version']}`)
 
   .listen(3000);
 

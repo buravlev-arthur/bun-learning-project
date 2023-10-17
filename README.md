@@ -218,3 +218,39 @@ app.group('/user', (app) => app
 );
 ```
 
+Валидация тела запроса:
+
+```typescript
+// определяем модель (DTO) в models/user.ts
+import { t } from 'elysia';
+
+export const userBody = t.Object({
+    username: t.String(),
+    password: t.String({
+        minLength: 6,
+    })
+});
+```
+
+```typescript
+// Используем при валидации тела запроса
+import { userBody } from './models/user';
+app.post('/user-data', ({ body }) => body, { body: userBoy });
+```
+
+Валидация параметров запроса:
+
+```typescript
+// определяем модель (DTO) в models/user.ts
+import { t } from 'elysia';
+
+export const userParams = t.Object({
+    id: t.Numeric()
+});
+```
+
+```typescript
+// Используем при валидации параметров
+import { userParams } from './models/user';
+app.get('/user-data/:id', ({ params: { id } }) => `userID: ${id}`, { params: userParams });
+```

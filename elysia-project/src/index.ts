@@ -1,5 +1,6 @@
-import { Elysia } from "elysia";
+import { Elysia, t } from "elysia";
 import plugin from "./plugins/plugin";
+import { userBody, userParams } from './models/user';
 
 let postIds = 0;
 
@@ -52,6 +53,12 @@ app.group('/user', (app) => app
   .get('/logout', () => 'Log out')
   .get('/:id', ({ params: { id }}) => `UserID: ${id}`)
 )
+
+// валидация тела запроса
+app.post('/user-data', ({ body }) => body, { body: userBody });
+
+// валидация параметров запроса
+app.get('/user-data/:id', ({ params: { id } }) => `userID: ${id}`, { params: userParams });
 
 app.listen(3000);
 

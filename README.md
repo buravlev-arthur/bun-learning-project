@@ -279,3 +279,28 @@ bun install
 bun dev
 ```
 
+## Express с Bun
+
+1. Создать новую директорию и внутри неё также создать: `index.ts`;
+2. Определить в `index.ts` простейший express-сервер:
+
+```typescript
+import express from 'express';
+
+const app = express();
+const port = 8080;
+
+app.get('/', (req, res) => {
+    res.send('Express server is working now');
+});
+
+app.listen(port, () => {
+    console.log(`Express server is listening on: http://localhost:${port}`);
+});
+```
+3. Установить в той же директории Express через Bun и запустить сервер:
+
+```bash
+bun add express
+bun index.ts
+```

@@ -41,9 +41,19 @@ const app = new Elysia()
 
   // Подключение плагина
   .use(plugin)
-  .get('/use-plugin', ({ store }) => `Версия подключенного плагина: ${store['plugin-version']}`)
+  .get('/use-plugin', ({ store }) => `Версия подключенного плагина: ${store['plugin-version']}`);
 
-  .listen(3000);
+// Группа и подгруппа маршрутов
+app.group('/user', (app) => app
+  .group('/signup', (app) => app
+    .get('/', () => 'Sign up (GET)')
+    .post('/', () => 'Sign up (POST)')
+  )
+  .get('/logout', () => 'Log out')
+  .get('/:id', ({ params: { id }}) => `UserID: ${id}`)
+)
+
+app.listen(3000);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`

@@ -205,3 +205,16 @@ const app = new Elysia()
     .listen(3000);
 ```
 
+Создание групп и подгрупп маршрутов:
+```typescript
+// запросы: /user/signup (GET и POST); /user/logout; /user/<user id>
+app.group('/user', (app) => app
+  .group('/signup', (app) => app
+    .get('/', () => 'Sign up (GET)')
+    .post('/', () => 'Sign up (POST)')
+  )
+  .get('/logout', () => 'Log out')
+  .get('/:id', ({ params: { id }}) => `UserID: ${id}`)
+);
+```
+

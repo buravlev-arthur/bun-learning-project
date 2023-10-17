@@ -16,7 +16,6 @@ bun run index.ts
 Добавление и запуск скриптов:
 
 ```json
-// package.json
 {
     "scripts": {
         "start": "bun run web-server.ts"
@@ -74,7 +73,32 @@ Bun.serve({
             }
         }
 
-        return new Response('404');
+        // если ни один маршрут не совпадает
+        return new Response('404 - Page not found', { status: 404 });
     }
 });
 ```
+
+Обработка ошибок:
+
+```javascript
+Bun.server({
+    fetch: (req) => {
+        const url = new URL(req.url);
+        if (url.pathname === '/error-page') {
+            // бросаем исключение
+            throw new Error('Message of an error');
+        }
+    },
+
+    // обрабатываем исключение
+    error: (err) => {
+        return new Response(`<pre>${err}\n${err.stack}</pre>`, {
+            headers: {
+                'Content-Type': 'text/html'
+            }
+        });
+    }
+})
+```
+

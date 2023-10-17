@@ -18,8 +18,20 @@ const server = Bun.serve({
             }
         }
 
-        return new Response('404');
-    }
+        if (url.pathname === '/error-page') {
+            throw new Error('Message of an error')
+        }
+
+        return new Response('404 - Page not found', { status: 404 });
+    },
+
+    error(error) {
+        return new Response(`<pre> ${error.message} \n ${error.stack} </pre>`, {
+            headers: {
+                'Content-Type': 'text/html',
+            }
+        });
+    },
 });
 
 console.log(`Server is running on http://localhost:${server.port}`);

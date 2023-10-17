@@ -1,4 +1,6 @@
-# Учебное приложение на Bun
+# Bun и фреймворк Elysia
+
+## Веб-сервер на Bun
 
 Установка и запуск:
 
@@ -111,4 +113,71 @@ if (url.pathname === '/file') {
     const fileContent = Bun.file(fileName);
     return new Response(fileContent);
 }
+```
+
+## REST API на Elysia
+
+Установка и запуск:
+
+```bash
+bun create elysia project-name
+cd project-name 
+bun dev
+```
+
+Простейший сервер:
+
+```typescript
+import Elysia from 'elysia';
+
+const app = new Elysia()
+    .get('/', () => 'Hello, Elysia')
+    .listen(3000);
+
+console.log(`Elysia is running on: ${app.server?.hostname}:${app.server?.port}`);
+```
+
+Определение маршрутов с помощью конвейера:
+
+```typescript
+new Elysia()
+    .get('/', () => 'Main page')
+    .get('/contacts', () => 'Contacts Page')
+    .post('users/add', ({ body }) => { /* ... */ })
+    // ...
+    .listen(3000);
+```
+
+Произвольный маршрут после `/track`:
+
+```typescript
+new Elysia().get('/track/*', () => 'Track route')
+```
+
+POST-запрос:
+
+```typescript
+let id = 0;
+
+new Elysia().post('/user/add', ({ body, set }) => {
+    set.status = 201;
+    return { id: postIds++, ...body as Object };
+});
+```
+
+Состояния и декораторы: 
+
+```typescript
+new Elysia()
+  .state({
+    version: 1,
+    author: 'John',
+  })
+  .decorate('getDate', () => new Date().toLocaleDateString())
+  
+  .get('/meta', ({ store: { version, author }, getDate }) => ({
+    version,
+    author,
+    date: getDate(),
+  }))
 ```

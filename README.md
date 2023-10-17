@@ -254,3 +254,28 @@ export const userParams = t.Object({
 import { userParams } from './models/user';
 app.get('/user-data/:id', ({ params: { id } }) => `userID: ${id}`, { params: userParams });
 ```
+
+## Сборка Vue-проекта на Bun
+
+Генерация фронтенд-проекта на Vite и установка зависимостей:
+
+```bash
+bun create vite project-name
+cd project-name
+bun install
+```
+
+Запускаем vite через Bun принудительно (флаг `--bun`):
+
+```JSON
+{
+    "scripts": {
+        "dev": "bunx --bun vite",
+    }
+}
+```
+
+```bash
+bun dev
+```
+

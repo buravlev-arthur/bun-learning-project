@@ -1,0 +1,11 @@
+@import "./vars.scss";
+
+html, body {
+    padding: 0px;
+    margin: 0px;
+    background: $bg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}

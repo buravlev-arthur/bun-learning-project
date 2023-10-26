@@ -67,6 +67,7 @@ const rightPlayerScore = computed<number>(() => {
 </script>
 
 <style lang="scss">
+@use 'sass:math';
 @import './style/vars.scss';
 
 #field {
@@ -78,10 +79,10 @@ const rightPlayerScore = computed<number>(() => {
   #sideline {
     position: absolute;
     top: 0px;
-    left: ($field-width / 2) - ($size / 2);
+    left: math.div($field-width, 2) - math.div($size, 2);
     width: 0px;
     height: $field-height;
-    border-left: $size / 2 dashed $color;
+    border-left: math.div($size, 2) dashed $color;
 
   }
 

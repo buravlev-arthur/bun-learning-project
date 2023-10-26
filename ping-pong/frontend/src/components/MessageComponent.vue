@@ -16,6 +16,7 @@ defineProps<Props>();
 </script>
 
 <style lang="scss">
+@use 'sass:math';
 @import "../style/vars.scss";
 
 #message {
@@ -23,8 +24,8 @@ defineProps<Props>();
   display: flex;
   justify-content: center;
   align-items: center;
-  top: $field-height / 2 - $size * 2;
-  left: $field-width / 2 - $size * 15;
+  top: math.div($field-height, 2) - $size * 2;
+  left: math.div($field-width, 2) - $size * 15;
   width: $size * 30;
   height: $size * 4;
   background: $color;

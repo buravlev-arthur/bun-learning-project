@@ -1,6 +1,6 @@
-import { Game } from './Game';
+import Game from './Game';
 
-export class Player {
+export default class Player {
     private yLimit: Record<string, number> = { min: 0, max: 400 };
     private racketYAlpha: Record<string, number> = {
         'ArrowUp': 1,

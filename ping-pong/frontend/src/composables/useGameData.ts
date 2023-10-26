@@ -33,7 +33,7 @@ export const useGameData = () => {
 
     onMounted(() => {
       const host = document.location.hostname;
-      socket.value = new WebSocket(`ws://${host}:8080/`);
+      socket.value = new WebSocket(`ws://${host}:3577/`);
 
       // если за отведенное время соединение не установлено
       setTimeout(() => {

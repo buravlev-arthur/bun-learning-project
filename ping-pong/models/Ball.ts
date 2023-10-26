@@ -1,20 +1,21 @@
-import { Player } from './Player';
-import { Game } from './Game';
+import Player from './Player';
+import Game from './Game';
+import type { Server } from 'bun';
 
-export class Ball {
-    private xLimits = { min: 0, max: 790 };
-    private yLimits = { min: 0, max: 490 };
-    private playersCoords = [ 60, 730 ];
+export default class Ball {
+    private xLimits: { min: number, max: number } = { min: 0, max: 790 };
+    private yLimits: { min: number, max: number } = { min: 0, max: 490 };
+    private playersCoords: number[] = [ 60, 730 ];
 
-    private currentCoords = [ 0, 0 ];
-    private radPi = 180;
-    private speed = 1;
-    private degrees = 0;
+    private currentCoords: number[] = [ 0, 0 ];
+    private radPi: number = 180;
+    private speed: number = 1;
+    private degrees: number = 0;
 
     constructor(
-        initCoords = [ 0, 0 ],
-        initDegrees = 0,
-        initSpeed = 1
+        initCoords: Ball['currentCoords'] = [ 0, 0 ],
+        initDegrees: Ball['degrees'] = 0,
+        initSpeed: Ball['speed'] = 1
     ) {
         this.currentCoords = initCoords;
         this.speed = initSpeed;
@@ -38,7 +39,11 @@ export class Ball {
         }
     }
 
-    setBallData(coords: number[], degress: number, speed?: number) {
+    setBallData(
+        coords: Ball['currentCoords'],
+        degress: Ball['degrees'],
+        speed?: Ball['speed']
+    ) {
         this.currentCoords = coords ?? [ 0, 0 ];
         this.degrees = degress ?? 0;
         this.speed = speed ?? this.speed;
@@ -47,7 +52,7 @@ export class Ball {
     moveBall(
         [ leftPlayer, rightPlayer ]: Player[],
         game: Game,
-        server: any,
+        server: Server,
         channel: string
     ): void {
         if (!leftPlayer || !rightPlayer || !game) {

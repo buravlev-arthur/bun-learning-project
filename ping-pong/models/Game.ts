@@ -1,10 +1,8 @@
-import { Server } from 'http';
-import { Ball } from './Ball';
-import { Player } from './Player';
-import { server } from 'typescript';
-import { ServerWebSocket } from 'bun';
+import Ball from './Ball';
+import Player from './Player';
+import type { Server } from 'bun';
 
-export class Game {
+export default class Game {
     private players: Player[] = [];
     private ball: Ball;
     private play: boolean = false;
@@ -47,7 +45,7 @@ export class Game {
         return this.players;
     }
 
-    startGameProcess = (server: any, channel: string): void => {
+    startGameProcess = (server: Server, channel: string): void => {
         this.gameProcess = setInterval(() => {
             if (!this.play) {
                 return;
@@ -82,7 +80,7 @@ export class Game {
         this.ball.setBallData([ 24, 240 ], 270, 20);
     }
 
-    restartGameProcess(server: any, channel: string): void {
+    restartGameProcess(server: Server, channel: string): void {
         let timer: number = 4;
         this.play = false;
         const interval = setInterval(() => {

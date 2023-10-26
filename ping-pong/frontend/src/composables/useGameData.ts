@@ -1,47 +1,95 @@
 import { ref, onMounted } from 'vue';
+import { Ball, Player, RecivedData } from '../types';
 
 export const useGameData = () => {
-    interface Ball {
-      x: number;
-      y: number;
-    }
-  
+
+    const keys: string[] = [ 'ArrowUp', 'ArrowDown' ];
+    const connectionTimeoutMs = 2000;
+
     const socket = ref<WebSocket | null>(null);
+    const keyPressInterval = ref<NodeJS.Timeout | null>(null);
+    const message = ref<string | null>(null);
 
     const ball = ref<Ball>({
       x: 0,
       y: 0
     });
 
-    // const sendMessage = () => {
-    //     const randomNumber = Math.ceil(Math.random() * 100).toString();
-    //     socket.value?.send(randomNumber);
-    // };
+    const players = ref<Player[]>([]);
+
+    const isPlay = ref<RecivedData['play']>(false);
 
     function updateBallCoords(data: Ball): void {
       ball.value = data;
     }
 
+    function updatePlayersData(data: Player[]): void {
+      players.value = data;
+    }
+
+    function updateGameStatus(status: RecivedData['play']) {
+      isPlay.value = status;
+    }
+
     onMounted(() => {
-        socket.value = new WebSocket('ws://localhost:8080/');
-      
-        socket.value.addEventListener('message', (event) => {
-          const recivedData = JSON.parse(event.data);
-          if (recivedData.ball) {
-            updateBallCoords(recivedData.ball as Ball);
-          }
+      socket.value = new WebSocket('ws://localhost:8080/');
 
-          if (recivedData.message) {
-            console.log(recivedData.message);
+      // если за отведенное время соединение не установлено
+      setTimeout(() => {
+          if (socket.value?.readyState === 3) {
+            message.value = 'Server connection error';
           }
-        });
+        }, connectionTimeoutMs);
 
-        // document.addEventListener('keydown', (event) => {
-        //   socket.value?.send(JSON.stringify({ key: event.code }));
-        // });
+      // ловим сообщения от сервера
+      socket.value.addEventListener('message', (event) => {
+        const recivedData: RecivedData = JSON.parse(event.data);
+        const ball = recivedData.ball;
+        const players = recivedData.players;
+        const serverMessage = recivedData.message;
+
+        // обновляем статус игры (игра/пауза)
+        updateGameStatus(recivedData.play);
+        // обновляем координаты шара
+        if (ball) {
+          updateBallCoords(ball);
+        }
+        // обновляем координаты игроков
+        if (players) {
+          updatePlayersData(players);
+        }
+        // выводим сообщения сервера
+        if (serverMessage) {
+          message.value = serverMessage;
+        } else {
+          message.value = null;
+        }
+      });
+
+      // когда игрок зажимает клавиши стрелок вверх/вниз
+      document.addEventListener('keydown', (event) => {
+        const key = event.code;
+        if (keys.includes(key) && keyPressInterval.value === null) {
+          keyPressInterval.value = setInterval(() => {
+            socket.value?.send(JSON.stringify({ key: event.code }));
+          }, 40);
+        }
+      });
+
+      // когда игрок отпускает клавиши со стралеками
+      document.addEventListener('keyup', (event) => {
+        const key = event.code;
+        if (keys.includes(key) && keyPressInterval.value !== null) {
+          clearInterval(keyPressInterval.value);
+          keyPressInterval.value = null;
+        }
+      });
     });
 
     return {
         ball,
+        players,
+        isPlay,
+        message,
     };
 };

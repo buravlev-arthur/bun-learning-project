@@ -3,23 +3,29 @@
 </template>
 
 <script setup lang="ts">
-import { StyleValue, computed } from 'vue';
-
-interface Coords {
-    x: number;
-    y: number;
-}
+import { StyleValue, computed, ref, onMounted } from 'vue';
 
 interface Props {
-    coords: Coords; 
+    racketY: number;
+    side: 'left' | 'right';
 }
 
 const props = defineProps<Props>();
 
+const racketX = ref<number>(0); 
+
 const style = computed<StyleValue>(() => ({
-    left: `${props.coords.x}px`,
-    bottom: `${props.coords.y}px`,
+    left: `${racketX.value}px`,
+    bottom: `${props.racketY}px`,
 }));
+
+onMounted(() => {
+    const leftPlayerPos = 40;
+    const rightPlayerPos = 750;
+    racketX.value = props.side === 'left'
+        ? leftPlayerPos
+        : rightPlayerPos;
+});
 </script>
 
 <style lang="scss">

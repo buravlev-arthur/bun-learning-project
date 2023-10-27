@@ -99,11 +99,11 @@ const rightPlayerScore = computed<number>(() => {
   }
 
   #score-left-player {
-    left: $size * 2;
+    left: math.div($field-width, 2) - ($size * 8);
   }
 
   #score-right-player {
-    right: $size *2;
+    right: math.div($field-width, 2) - ($size * 8);
   }
 }
 </style>

@@ -10,6 +10,8 @@ export default class Player {
     private racketCoordY: number = 0;
     private score: number = 0;
     private speed: number = 1;
+    private moving: boolean = false;
+    private movingTimeout: NodeJS.Timeout | null = null;
 
     constructor(
         sessionId: string,
@@ -21,7 +23,16 @@ export default class Player {
         this.racketCoordY = racketCoordY ?? this.racketCoordY; 
     }
 
+    isMoving(): boolean {
+        return this.moving;
+    }
+
     movePlayer(key: string, game: Game): void {
+        if (this.movingTimeout) {
+            clearTimeout(this.movingTimeout)
+            this.movingTimeout = null;
+        }
+
         if (!game.isPlay()) {
             return;
         }
@@ -29,6 +40,11 @@ export default class Player {
             Math.min(this.racketCoordY + this.racketYAlpha[key] * this.speed, this.yLimit.max),
             this.yLimit.min
         );
+        
+        this.moving = true;
+        this.movingTimeout = setTimeout(() => {
+            this.moving = false;
+        }, 200);
     }
 
     resetPlayer(racketCoordY?: number, score?: number, speed?: number) {

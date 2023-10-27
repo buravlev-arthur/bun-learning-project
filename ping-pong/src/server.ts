@@ -36,7 +36,7 @@ export default (games: Record<string, Game>): Server => {
                 // если новое поле - кидаем на поле мяч
                 if (!games[channel]) {
                     games[channel] = new Game(
-                        new Ball([ 24, 240 ], 270, 20),
+                        new Ball([ 50, 240 ], 270, 5),
                         [],
                         false,
                         null
@@ -50,7 +50,7 @@ export default (games: Record<string, Game>): Server => {
                 // если ещё нет игроков или только один - добавляем игрока
                 // и подписываем его на рассылку
                 if (games[channel].getPlayersCount() < 2) {
-                    games[channel].addPlayer(new Player(sessionId, 20, 200));
+                    games[channel].addPlayer(new Player(sessionId, 10, 200));
                     ws.subscribe(channel);
     
                     // если подключился второй игрок - запускаем игру

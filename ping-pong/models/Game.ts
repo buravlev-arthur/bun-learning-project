@@ -51,7 +51,7 @@ export default class Game {
                 return;
             }
         
-            this.ball.moveBall(this.players, this, server, channel);
+            this.ball.moveBall(this, server, channel);
             server.publish(
                 channel,
                 JSON.stringify({
@@ -61,7 +61,7 @@ export default class Game {
                     play: this.play,
                 })
             );
-        }, 40);
+        }, 10);
     };
 
     pauseGameProcess(): void {
@@ -77,7 +77,7 @@ export default class Game {
     resetGameProcess(): void {
         this.play = false;
         this.players.forEach((player) => player.resetPlayer(200, 0, 20));
-        this.ball.setBallData([ 24, 240 ], 270, 20);
+        this.ball.setBallData([ 50, 240 ], 270, 5);
     }
 
     restartGameProcess(server: Server, channel: string): void {

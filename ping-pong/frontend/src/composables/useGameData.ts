@@ -73,7 +73,7 @@ export const useGameData = () => {
         if (keys.includes(key) && keyPressInterval.value === null) {
           keyPressInterval.value = setInterval(() => {
             socket.value?.send(JSON.stringify({ key: event.code }));
-          }, 40);
+          }, 10);
         }
       });
 

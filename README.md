@@ -1,5 +1,3 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/23851ad42e2eec2aa7aa/maintainability)](https://codeclimate.com/github/buravlev-arthur/ping-pong-Bun-WebSockets/maintainability)
-
 # Bun и фреймворк Elysia
 
 ## Веб-сервер на Bun
